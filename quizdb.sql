@@ -18,5 +18,9 @@ START TRANSACTION;
 USE `quizdb`;
 INSERT INTO `Quiz` (`name`)
 VALUES ('Quiz #1');
+INSERT INTO `Quiz` (`name`)
+VALUES ('Animal Quiz');
+INSERT INTO `Quiz` (`name`)
+VALUES ('Space Jam Trivia');
 
 COMMIT;
