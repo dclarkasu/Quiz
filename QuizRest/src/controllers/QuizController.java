@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import data.QuizDAO;
+import entities.Question;
 import entities.Quiz;
 
 @RestController
@@ -74,18 +75,18 @@ public class QuizController {
 		}
 	}
 
-//	@RequestMapping(path="quizzes/{id}", method=RequestMethod.GET)
-//	public Set<Question> showQuestions(int id, HttpServletResponse res) {
-//		return null;
-//	}
+	@RequestMapping(path="quizzes/{id}/questions", method=RequestMethod.GET)
+	public Set<Question> showQuestions(@PathVariable int id, HttpServletResponse res) {
+		return null;
+	}
 
-//	@RequestMapping(path="quizzes", method=RequestMethod.POST)
-//	public Question createQuestions(int id, String questJSON, HttpServletResponse res) {
-//		return null;
-//	}
+	@RequestMapping(path="quizzes/{id}/questions", method=RequestMethod.POST)
+	public Question createQuestions(@PathVariable int id,@RequestBody String questJSON, HttpServletResponse res) {
+		return null;
+	}
 	
-	@RequestMapping(path="quizzes", method=RequestMethod.DELETE)
-	public boolean destroyQuestions(int id, int questId, HttpServletResponse res) {
+	@RequestMapping(path="quizzes/{id}/questions/{questId}", method=RequestMethod.DELETE)
+	public boolean destroyQuestions(@PathVariable int id,@RequestBody int questId, HttpServletResponse res) {
 		return false;
 	}
 	

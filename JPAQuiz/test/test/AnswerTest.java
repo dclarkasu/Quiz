@@ -1,7 +1,6 @@
 package test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -11,12 +10,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import entities.Quiz;
+import entities.Question;
+import entities.Answer;
 
-public class QuizTest {
+public class AnswerTest {
 	private EntityManagerFactory emf = null;
 	private EntityManager em = null;
-	Quiz q;
+	Answer a;
 	
 	@Before
 	public void setUp() {
@@ -38,16 +38,16 @@ public class QuizTest {
 	}
 	
 	@Test
-	public void test_Quiz_Connected_to_DB() {
-		q = em.find(Quiz.class, 1);
-		assertNotNull(q.getName());
-		assertEquals(q.getName(), "Quiz #1");
+	public void test_Answer_Connected_to_DB() {
+		a = em.find(Answer.class, 1);
+		assertEquals(a.getId(), 1);
+		assertEquals(a.getAnswerText(), "Deleware");
 	}
-	//Finds Quiz Entity then gets Question field to test on
+	//Finds the Answer Entity then retrieves its Question field to test on
 	@Test
-	public void test_Mapping_To_Question() {
-		q = em.find(Quiz.class, 10);
-		assertNotNull(q.getQuestions());
-		assertEquals(q.getQuestions().size(), 5);
+	public void test_Many_To_One_With_Question() {
+		a = em.find(Answer.class, 1);
+		assertEquals(a.getQuestion().getQuestionText(), "What is the smallest state in the US");
+		assertEquals(a.getQuestion().getAnswers().size(), 4);
 	}
 }

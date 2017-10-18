@@ -1,7 +1,6 @@
 package test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -11,12 +10,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import entities.Question;
 import entities.Quiz;
 
-public class QuizTest {
+public class QuestionTest {
 	private EntityManagerFactory emf = null;
 	private EntityManager em = null;
-	Quiz q;
+	Question q;
 	
 	@Before
 	public void setUp() {
@@ -38,16 +38,18 @@ public class QuizTest {
 	}
 	
 	@Test
-	public void test_Quiz_Connected_to_DB() {
-		q = em.find(Quiz.class, 1);
-		assertNotNull(q.getName());
-		assertEquals(q.getName(), "Quiz #1");
+	public void test_Question_Connected_to_DB() {
+		q = em.find(Question.class, 1);
+		assertNotNull(q.getQuestionText());
+		assertEquals(q.getId(), 1);
+		assertEquals(q.getAnswers().size(), 4);
 	}
-	//Finds Quiz Entity then gets Question field to test on
+	//Finds Question Entity from id then retrieves Quiz field to test
 	@Test
-	public void test_Mapping_To_Question() {
-		q = em.find(Quiz.class, 10);
-		assertNotNull(q.getQuestions());
-		assertEquals(q.getQuestions().size(), 5);
+	public void test_Mapping_To_Quiz() {
+		q = em.find(Question.class, 1);
+//		Quiz quiz = q.getQuiz(); Can method chain like below or create an instance to test on
+		assertNotNull(q.getQuiz());
+		assertEquals(q.getQuiz().getName(), "States");
 	}
 }
