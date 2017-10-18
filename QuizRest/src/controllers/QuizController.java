@@ -58,6 +58,7 @@ public class QuizController {
 			res.setStatus(404);
 			return null;
 		} else {
+			res.setStatus(200);
 			return quizdao.update(id, quizJSON);
 		}
 	}
