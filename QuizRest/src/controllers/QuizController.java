@@ -77,12 +77,20 @@ public class QuizController {
 
 	@RequestMapping(path="quizzes/{id}/questions", method=RequestMethod.GET)
 	public Set<Question> showQuestions(@PathVariable int id, HttpServletResponse res) {
-		return null;
+		Set<Question> quests = quizdao.showAllQuestions(id);
+		if (quests == null) {
+			res.setStatus(404);
+			return null;
+		} else {
+			res.setStatus(200);
+			return quests;
+		}
 	}
 
 	@RequestMapping(path="quizzes/{id}/questions", method=RequestMethod.POST)
 	public Question createQuestions(@PathVariable int id,@RequestBody String questJSON, HttpServletResponse res) {
-		return null;
+		Question quest = quizdao.createQuestion(id, questJSON);
+		return quest;
 	}
 	
 	@RequestMapping(path="quizzes/{id}/questions/{questId}", method=RequestMethod.DELETE)

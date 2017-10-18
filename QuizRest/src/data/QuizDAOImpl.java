@@ -1,6 +1,8 @@
 package data;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -10,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import entities.Question;
 import entities.Quiz;
 
 @Transactional
@@ -75,6 +78,35 @@ public class QuizDAOImpl implements QuizDAO {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public Set<Question> showAllQuestions(int quizId) {
+		//query gets all properties from Question entity JOINED to Answer table WHERE the Question
+		//Entity's Quiz field's id = the id passed in. It returns a list of Questions and their answers
+		//thanks to the JOIN Fetch (which prevents lazy loading)
+		
+		String query = "SELECT q FROM Question q JOIN FETCH q.answers WHERE q.quiz.id = :id";
+		List<Question> result = em.createQuery(query, Question.class)
+				.setParameter("id", quizId)
+				.getResultList();
+		
+		//.getResultList() returns a List but we want a Set.
+		//Pass the List into a HashSet constructor which converts it into a HashSet
+		
+		return new HashSet<Question>(result);
+	}
+
+	@Override
+	public Question createQuestion(int id, String questJSON) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean destroyQuestion(int id, int questid) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
