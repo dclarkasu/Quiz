@@ -34,26 +34,43 @@ public class QuizController {
 	@RequestMapping(path="quizzes/{id}", method=RequestMethod.GET)
 	public Quiz show(@PathVariable int id, HttpServletResponse res) {
 		if (quizdao.show(id) == null) {
-			res.setStatus(501);
+			res.setStatus(404);
 		} else {
 			res.setStatus(200);
 		}
 		return quizdao.show(id);
 	}
 	
-	@RequestMapping(path="quizzes", method=RequestMethod.POST)
+	@RequestMapping(path="/quizzes", method=RequestMethod.POST)
 	public Quiz create(@RequestBody String quizJSON, HttpServletResponse res) {
-		return quizdao.create(quizJSON);
+		Quiz q = quizdao.create(quizJSON);
+		if (q == null) {
+			res.setStatus(400);
+		} else {
+			res.setStatus(201);
+		}
+		return q;
 	}
 	
 	@RequestMapping(path="quizzes/{id}", method=RequestMethod.PUT)
-	public Quiz update(int id, String quizJSON, HttpServletResponse res) {
-		return null;
+	public Quiz update(@PathVariable int id, @RequestBody String quizJSON, HttpServletResponse res) {
+		if (quizdao.update(id, quizJSON) == null) {
+			res.setStatus(404);
+			return null;
+		} else {
+			return quizdao.update(id, quizJSON);
+		}
 	}
 	
 	@RequestMapping(path="quizzes/{id}", method=RequestMethod.DELETE)
-	public boolean destroy(int id, HttpServletResponse res) {
-		return false;
+	public boolean destroy(@PathVariable int id, HttpServletResponse res) {
+		if (quizdao.destroy(id) == false) {
+			res.setStatus(400);
+			return false;
+		} else {
+			res.setStatus(200);
+			return true;
+		}
 	}
 
 //	@RequestMapping(path="quizzes/{id}", method=RequestMethod.GET)
