@@ -94,8 +94,9 @@ public class QuizController {
 	}
 	
 	@RequestMapping(path="quizzes/{id}/questions/{questId}", method=RequestMethod.DELETE)
-	public boolean destroyQuestions(@PathVariable int id,@RequestBody int questId, HttpServletResponse res) {
-		return false;
+	public boolean destroyQuestions(@PathVariable int id,@PathVariable int questId, HttpServletResponse res) {
+		System.out.println("In controller");
+		return quizdao.destroyQuestion(id, questId);
 	}
 	
 }

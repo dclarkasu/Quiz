@@ -91,6 +91,13 @@ public class QuizDAOImpl implements QuizDAO {
 				.setParameter("id", quizId)
 				.getResultList();
 		
+		if (result.size() < 1) {
+			query = "SELECT q FROM Question q WHERE q.quiz.id = :id";
+			result = em.createQuery(query, Question.class)
+					.setParameter("id", quizId)
+					.getResultList();
+		}
+		
 		//.getResultList() returns a List but we want a Set.
 		//Pass the List into a HashSet constructor which converts it into a HashSet
 		
@@ -99,14 +106,32 @@ public class QuizDAOImpl implements QuizDAO {
 
 	@Override
 	public Question createQuestion(int id, String questJSON) {
-		// TODO Auto-generated method stub
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			Question mappedQuestion = mapper.readValue(questJSON, Question.class);
+			Quiz quiz = em.find(Quiz.class, id);
+			//setting the Quiz object as the non-owning side to the question. Assigning
+			//quiz field in Question Class to the found quiz
+			mappedQuestion.setQuiz(quiz);
+			
+			em.persist(mappedQuestion);
+			em.flush();
+			return mappedQuestion;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 	@Override
 	public boolean destroyQuestion(int id, int questid) {
-		// TODO Auto-generated method stub
-		return false;
+		Question quest = em.find(Question.class, questid);
+		if (quest.getQuiz().getId() == id) {
+			em.remove(quest);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

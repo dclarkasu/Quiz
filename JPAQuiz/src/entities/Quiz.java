@@ -56,7 +56,7 @@ public class Quiz {
 
 	@Override
 	public String toString() {
-		return "Quiz [id=" + id + ", name=" + name + ", questions=" + questions + "]";
+		return "Quiz [id=" + id + ", name=" + name + "]";
 	}
 	
 	

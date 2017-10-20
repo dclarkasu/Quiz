@@ -2,6 +2,7 @@ package entities;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,7 +23,7 @@ public class Question {
 	private String questionText;
 	
 	@JsonManagedReference(value="questionToAnswer")
-	@OneToMany(mappedBy = "question")
+	@OneToMany(mappedBy = "question", cascade= {CascadeType.PERSIST, CascadeType.REMOVE})
 	private Set<Answer> answers;
 	
 	@JsonIgnore
@@ -61,7 +62,7 @@ public class Question {
 
 	@Override
 	public String toString() {
-		return "Question [id=" + id + ", questionText=" + questionText + ", answers=" + answers + ", quiz=" + quiz
+		return "Question [id=" + id + ", questionText=" + questionText + ", quiz=" + quiz
 				+ "]";
 	}
 
